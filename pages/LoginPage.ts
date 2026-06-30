@@ -11,14 +11,40 @@ export class LoginPage {
     await this.page.goto('/');
   }
 
-  async login(email: string, password: string) {
-    await this.page.getByPlaceholder(/email|username/i).fill(email);
-    await this.page.getByPlaceholder(/password/i).fill(password);
-    await this.page.getByRole('button', { name: /login|sign in/i }).click();
+  async login(username: string, password: string) {
+    const usernameInput = this.page
+      .locator('input[type="text"], input[name="username"], input[name="email"], input#username, input#email')
+      .first();
+
+    const passwordInput = this.page
+      .locator('input[type="password"], input[name="password"], input#password')
+      .first();
+
+    await usernameInput.fill(username);
+    await passwordInput.fill(password);
+
+    await this.page
+      .locator('button[type="submit"], button')
+      .filter({ hasText: /login|log in|sign in/i })
+      .first()
+      .click();
   }
 
   async verifyLoginSuccessful() {
-    await expect(this.page.getByText('Web Application')).toBeVisible();
-    await expect(this.page.getByText('Mobile Application')).toBeVisible();
-  }
+  await expect(this.page.getByRole('heading', { name: 'Projects' })).toBeVisible();
+
+  await expect(
+    this.page.getByRole('button', {
+      name: /Web Application Main web application development/i,
+    })
+  ).toBeVisible();
+
+  await expect(
+    this.page.getByRole('button', {
+      name: /Mobile Application Native mobile app development/i,
+    })
+  ).toBeVisible();
+
+  await expect(this.page.getByRole('button', { name: /logout/i })).toBeVisible();
+}
 }

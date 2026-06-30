@@ -8,32 +8,41 @@ export class BoardPage {
   }
 
   async navigateToProject(projectName: string) {
-    await this.page.getByText(projectName, { exact: true }).click();
-    await expect(this.page.getByText(projectName, { exact: true })).toBeVisible();
+    const projectButton = this.page
+      .getByRole('navigation')
+      .getByRole('button', { name: new RegExp(projectName, 'i') });
+
+    await projectButton.click();
+
+    await expect(
+      this.page.getByRole('banner').getByRole('heading', { name: projectName })
+    ).toBeVisible();
   }
 
   getColumn(columnName: string): Locator {
     return this.page
+      .locator('main')
       .locator('div')
       .filter({
-        has: this.page.getByText(columnName, { exact: true }),
+        has: this.page.getByRole('heading', {
+          name: new RegExp(`^${columnName}`),
+        }),
       })
       .first();
   }
 
   getTaskCard(taskName: string): Locator {
     return this.page
-      .locator('div')
-      .filter({
-        has: this.page.getByText(taskName, { exact: true }),
-      })
-      .first();
+      .getByRole('heading', { name: taskName, exact: true })
+      .locator('..');
   }
 
   async verifyTaskInColumn(taskName: string, columnName: string) {
     const column = this.getColumn(columnName);
 
-    await expect(column.getByText(taskName, { exact: true })).toBeVisible();
+    await expect(
+      column.getByRole('heading', { name: taskName, exact: true })
+    ).toBeVisible();
   }
 
   async verifyTaskTags(taskName: string, tags: string[]) {
