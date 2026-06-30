@@ -1,0 +1,45 @@
+export type TaskScenario = {
+  project: string;
+  column: string;
+  task: string;
+  tags: string[];
+};
+
+export const taskScenarios: TaskScenario[] = [
+  {
+    project: 'Web Application',
+    column: 'To Do',
+    task: 'Implement user authentication',
+    tags: ['Feature', 'High Priority'],
+  },
+  {
+    project: 'Web Application',
+    column: 'To Do',
+    task: 'Fix navigation bug',
+    tags: ['Bug'],
+  },
+  {
+    project: 'Web Application',
+    column: 'In Progress',
+    task: 'Design system updates',
+    tags: ['Design'],
+  },
+  {
+    project: 'Mobile Application',
+    column: 'To Do',
+    task: 'Push notification system',
+    tags: ['Feature'],
+  },
+  {
+    project: 'Mobile Application',
+    column: 'In Progress',
+    task: 'Offline mode',
+    tags: ['Feature', 'High Priority'],
+  },
+  {
+    project: 'Mobile Application',
+    column: 'Done',
+    task: 'App icon design',
+    tags: ['Design'],
+  },
+];
